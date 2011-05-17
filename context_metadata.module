@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @file
+ *   Provides a context reaction
+ */
+
+/**
+ * Implementation of hook_context_plugins()
+ */
+function context_metadata_context_plugins() {
+  $plugins = array();
+  $plugins['context_metadata_context_reaction'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'context_metadata') .'/plugins',
+      'file' => 'context_metadata_reaction.inc',
+      'class' => 'context_metadata_reaction',
+      'parent' => 'context_reaction',
+    ),
+  );
+  
+  return $plugins;
+}
+
+
+/**
+ * Implementation of hook_context_registry()
+ */ 
+function context_metadata_context_registry() {
+  return array(
+    'reactions' => array(
+      'context_metadata' => array(
+        'title' => t('Metadata'),
+        //'description' => t(''),
+        'plugin' => 'context_metadata_context_reaction',
+      ),
+    ),
+  );
+}
+
+
+/**
+* Implements hook_context_page_reaction().
+*/
+function context_metadata_context_page_reaction() {
+  if ($plugin = context_get_plugin('reaction', 'context_metadata')) {
+    $plugin->execute();
+  }
+}
