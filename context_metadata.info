@@ -1,0 +1,7 @@
+name = Context Meta Data
+description = Allows site admins to setup Meta Data using Contexts module
+core = 6.x
+package = Meta tags
+
+dependencies[] = ctools
+dependencies[] = context
