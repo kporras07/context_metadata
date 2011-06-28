@@ -5,3 +5,6 @@ package = Meta tags
 
 dependencies[] = ctools
 dependencies[] = context
+dependencies[] = nodewords
+dependencies[] = page_title
+dependencies[] = token
