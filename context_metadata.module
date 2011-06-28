@@ -49,6 +49,9 @@ function context_metadata_context_page_reaction() {
 }
 
 
+/**
+* Implements hook_page_title_alter().
+*/
 function context_metadata_page_title_alter(&$title) {
   $static_metadata_array = context_metadata_static_store();
 
@@ -58,19 +61,27 @@ function context_metadata_page_title_alter(&$title) {
 }
 
 
+/**
+* Implements hook_nodewords_tags_alter().
+*/
 function context_metadata_nodewords_tags_alter(&$output, $parameters) {
   $static_metadata_array = context_metadata_static_store();
 
+  // alter the description
   if ($static_metadata_array['metadata_description']) {
     $output['description'] = $static_metadata_array['metadata_description'];
   }
-  
+
+  // alter the keywords
   if ($static_metadata_array['metadata_keywords']) {
     $output['keywords'] = $static_metadata_array['metadata_keywords'];
-  }  
+  }
 }
 
 
+/**
+* static store.
+*/
 function context_metadata_static_store($static_metadata_array = array()) {
   static $static_array;
 
