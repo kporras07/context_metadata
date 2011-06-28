@@ -18,19 +18,19 @@ function context_metadata_context_plugins() {
       'parent' => 'context_reaction',
     ),
   );
-  
+
   return $plugins;
 }
 
 
 /**
  * Implementation of hook_context_registry()
- */ 
+ */
 function context_metadata_context_registry() {
   return array(
     'reactions' => array(
       'context_metadata' => array(
-        'title' => t('Metadata'),
+        'title' => t('Meta Data'),
         //'description' => t(''),
         'plugin' => 'context_metadata_context_reaction',
       ),
@@ -46,4 +46,37 @@ function context_metadata_context_page_reaction() {
   if ($plugin = context_get_plugin('reaction', 'context_metadata')) {
     $plugin->execute();
   }
+}
+
+
+function context_metadata_page_title_alter(&$title) {
+  $static_metadata_array = context_metadata_static_store();
+
+  if ($static_metadata_array['metadata_title']) {
+    $title = $static_metadata_array['metadata_title'];
+  }
+}
+
+
+function context_metadata_nodewords_tags_alter(&$output, $parameters) {
+  $static_metadata_array = context_metadata_static_store();
+
+  if ($static_metadata_array['metadata_description']) {
+    $output['description'] = $static_metadata_array['metadata_description'];
+  }
+  
+  if ($static_metadata_array['metadata_keywords']) {
+    $output['keywords'] = $static_metadata_array['metadata_keywords'];
+  }  
+}
+
+
+function context_metadata_static_store($static_metadata_array = array()) {
+  static $static_array;
+
+  if (!empty($static_metadata_array)) {
+    $static_array = $static_metadata_array;
+  }
+
+  return $static_array;
 }
