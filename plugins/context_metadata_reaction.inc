@@ -12,6 +12,7 @@ class context_metadata_reaction extends context_reaction {
       '#title' => t('Meta Title'),
       '#description' => t('Title goes here'),
       '#type' => 'textfield',
+      '#maxlength' => 256, // some say this this is the max recommended length
       '#default_value' => isset($values['metadata_title']) ? $values['metadata_title'] : '',
     );
 
@@ -19,6 +20,7 @@ class context_metadata_reaction extends context_reaction {
       '#title' => t('Meta Description'),
       '#description' => t('Meta Description'),
       '#type' => 'textfield',
+      '#maxlength' => 400, // some say this this is the max recommended length
       '#default_value' => isset($values['metadata_description']) ? $values['metadata_description'] : '',
     );
 
@@ -26,6 +28,7 @@ class context_metadata_reaction extends context_reaction {
       '#title' => t('Meta Keywords'),
       '#description' => t('Meta Keywords'),
       '#type' => 'textfield',
+      '#maxlength' => 400, // some say this this is the max recommended length
       '#default_value' => isset($values['metadata_keywords']) ? $values['metadata_keywords'] : '',
     );
 
