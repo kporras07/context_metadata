@@ -1,18 +1,13 @@
 <?php
 
 /**
- * @file
- *   Provides a context reaction
- */
-
-/**
- * Implementation of hook_context_plugins()
+ * Implements hook_context_plugins()
  */
 function context_metadata_context_plugins() {
   $plugins = array();
   $plugins['context_metadata_context_reaction'] = array(
     'handler' => array(
-      'path' => drupal_get_path('module', 'context_metadata') .'/plugins',
+      'path' => drupal_get_path('module', 'context_metadata') . '/plugins',
       'file' => 'context_metadata_reaction.inc',
       'class' => 'context_metadata_reaction',
       'parent' => 'context_reaction',
@@ -22,72 +17,70 @@ function context_metadata_context_plugins() {
   return $plugins;
 }
 
-
 /**
- * Implementation of hook_context_registry()
+ * Implements hook_context_registry()
  */
 function context_metadata_context_registry() {
   return array(
     'reactions' => array(
       'context_metadata' => array(
         'title' => t('Meta Data'),
-        //'description' => t(''),
         'plugin' => 'context_metadata_context_reaction',
       ),
     ),
   );
 }
 
-
 /**
 * Implements hook_context_page_reaction().
-*/
+*/  
 function context_metadata_context_page_reaction() {
   if ($plugin = context_get_plugin('reaction', 'context_metadata')) {
     $plugin->execute();
   }
 }
 
-
 /**
-* Implements hook_page_title_alter().
-*/
-function context_metadata_page_title_alter(&$title) {
-  $static_metadata_array = context_metadata_static_store();
-
-  if ($static_metadata_array['metadata_title']) {
-    $title = $static_metadata_array['metadata_title'];
+ * Implements hook_preprocess_html()
+ * @param $vars
+ */
+function context_metadata_preprocess_html(&$vars) {
+  $metadata = drupal_static('metadata_array');
+  
+  if ($metadata['metadata_title']) {
+    $vars['head_title'] = $metadata['metadata_title'];
   }
 }
 
-
 /**
-* Implements hook_nodewords_tags_alter().
-*/
-function context_metadata_nodewords_tags_alter(&$output, $parameters) {
-  $static_metadata_array = context_metadata_static_store();
+ * Implements hook_html_head_alter()
+ * @param unknown_type $elements
+ */
+function context_metadata_html_head_alter(&$elements) {
 
-  // alter the description
-  if ($static_metadata_array['metadata_description']) {
-    $output['description'] = $static_metadata_array['metadata_description'];
+  unset($elements['system_meta_generator']);
+
+  $metadata = drupal_static('metadata_array');
+  
+  if ($metadata['metadata_description']) {
+    $elements['metatag_description'] = array(
+      '#theme' => 'metatag',
+      '#tag' => 'meta',
+      '#value' => $metadata['metadata_description'],
+      '#type' => 'html_tag',
+      '#id' => 'metatag_description',
+      '#name' => 'description'
+      );
   }
-
-  // alter the keywords
-  if ($static_metadata_array['metadata_keywords']) {
-    $output['keywords'] = $static_metadata_array['metadata_keywords'];
+  
+  if ($metadata['metadata_keywords']) {
+    $elements['metatag_keywords'] = array(
+      '#theme' => 'metatag',
+      '#tag' => 'meta',
+      '#value' => $metadata['metadata_keywords'],
+      '#type' => 'html_tag',
+      '#id' => 'metatag_keywords',
+      '#name' => 'keywords'
+    );
   }
-}
-
-
-/**
-* static store.
-*/
-function context_metadata_static_store($static_metadata_array = array()) {
-  static $static_array;
-
-  if (!empty($static_metadata_array)) {
-    $static_array = $static_metadata_array;
-  }
-
-  return $static_array;
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Output context maxage.
+ * @file context reaction
  */
 class context_metadata_reaction extends context_reaction {
 
@@ -35,25 +35,24 @@ class context_metadata_reaction extends context_reaction {
     return $form;
   }
 
-
   /**
    * Output a list of active contexts.
    */
   function execute() {
+
     $contexts = context_active_contexts();
 
     foreach ($contexts as $context) {
       if (!empty($context->reactions['context_metadata'])) {
+
         $metadata_array = $context->reactions['context_metadata'];
 
+        $metadata = &drupal_static('metadata_array');
         foreach ($metadata_array as $key => $value) {
           if (!empty($value)) {
-            $static_metadata_array[$key] = t(check_plain($value));
+            $metadata[$key] = t(check_plain($value));
           }
         }
-
-        // store the array
-        context_metadata_static_store($static_metadata_array);
       }
     }
   }
