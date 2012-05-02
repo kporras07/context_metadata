@@ -47,7 +47,7 @@ function context_metadata_context_page_reaction() {
 function context_metadata_preprocess_html(&$vars) {
   $metadata = drupal_static('metadata_array');
   
-  if ($metadata['metadata_title']) {
+  if (isset($metadata['metadata_title'])) {
     $vars['head_title'] = $metadata['metadata_title'];
   }
 }
@@ -62,7 +62,7 @@ function context_metadata_html_head_alter(&$elements) {
 
   $metadata = drupal_static('metadata_array');
   
-  if ($metadata['metadata_description']) {
+  if (isset($metadata['metadata_description'])) {
     $elements['metatag_description'] = array(
       '#theme' => 'metatag',
       '#tag' => 'meta',
@@ -73,7 +73,7 @@ function context_metadata_html_head_alter(&$elements) {
       );
   }
   
-  if ($metadata['metadata_keywords']) {
+  if (isset($metadata['metadata_keywords'])) {
     $elements['metatag_keywords'] = array(
       '#theme' => 'metatag',
       '#tag' => 'meta',
