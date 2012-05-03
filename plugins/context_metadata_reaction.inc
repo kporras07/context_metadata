@@ -32,6 +32,13 @@ class context_metadata_reaction extends context_reaction {
       '#default_value' => isset($values['metadata_keywords']) ? $values['metadata_keywords'] : '',
     );
 
+    $form['metadata_canonical'] = array(
+      '#title' => t('Canonical URL'),
+      '#description' => t('Canonical URL'),
+      '#type' => 'textfield',
+      '#maxlength' => 400, // some say this this is the max recommended length
+      '#default_value' => isset($values['metadata_canonical']) ? $values['metadata_canonical'] : '',
+    );
     return $form;
   }
 
@@ -46,7 +53,6 @@ class context_metadata_reaction extends context_reaction {
       if (!empty($context->reactions['context_metadata'])) {
 
         $metadata_array = $context->reactions['context_metadata'];
-
         $metadata = &drupal_static('metadata_array');
         foreach ($metadata_array as $key => $value) {
           if (!empty($value)) {

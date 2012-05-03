@@ -83,4 +83,16 @@ function context_metadata_html_head_alter(&$elements) {
       '#name' => 'keywords'
     );
   }
+
+  if (isset($metadata['metadata_canonical'])) {
+
+    foreach ($elements as $key => $element) {
+      if (isset($element['#attributes']['rel']) && $element['#attributes']['rel'] == 'canonical') {
+        $elements[$key]['#attributes']['href'] = $metadata['metadata_canonical'];
+      }
+      if ($key == 'metatag_canonical') {
+        $elements[$key]['#value'] = $metadata['metadata_canonical'];
+      }
+    }  
+  }
 }
