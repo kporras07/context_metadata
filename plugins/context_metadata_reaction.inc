@@ -39,6 +39,13 @@ class context_metadata_reaction extends context_reaction {
       '#maxlength' => 400, // some say this this is the max recommended length
       '#default_value' => isset($values['metadata_canonical']) ? $values['metadata_canonical'] : '',
     );
+    
+    $form['tokens'] = array(
+      '#theme' => 'token_tree',
+      '#token_types' => array('node'), // The token types that have specific context. Can be multiple token types like 'term' and/or 'user'
+      '#global_types' => TRUE, // A boolean TRUE or FALSE whether to include 'global' context tokens like [current-user:*] or [site:*]. Defaults to TRUE.
+      '#click_insert' => TRUE, // A boolean whether to include the 'Click this token to insert in into the the focused textfield' JavaScript functionality. Defaults to TRUE.
+    );
     return $form;
   }
 

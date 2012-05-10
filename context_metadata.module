@@ -47,8 +47,10 @@ function context_metadata_context_page_reaction() {
 function context_metadata_preprocess_html(&$vars) {
   $metadata = drupal_static('metadata_array');
   
+ 
+  
   if (isset($metadata['metadata_title'])) {
-    $vars['head_title'] = $metadata['metadata_title'];
+    $vars['head_title'] = token_replace($metadata['metadata_title']);
   }
 }
 
@@ -66,7 +68,7 @@ function context_metadata_html_head_alter(&$elements) {
     $elements['metatag_description'] = array(
       '#theme' => 'metatag',
       '#tag' => 'meta',
-      '#value' => $metadata['metadata_description'],
+      '#value' => token_replace($metadata['metadata_description']),
       '#type' => 'html_tag',
       '#id' => 'metatag_description',
       '#name' => 'description'
@@ -77,7 +79,7 @@ function context_metadata_html_head_alter(&$elements) {
     $elements['metatag_keywords'] = array(
       '#theme' => 'metatag',
       '#tag' => 'meta',
-      '#value' => $metadata['metadata_keywords'],
+      '#value' => token_replace($metadata['metadata_keywords']),
       '#type' => 'html_tag',
       '#id' => 'metatag_keywords',
       '#name' => 'keywords'
@@ -85,7 +87,6 @@ function context_metadata_html_head_alter(&$elements) {
   }
 
   if (isset($metadata['metadata_canonical'])) {
-
     foreach ($elements as $key => $element) {
       if (isset($element['#attributes']['rel']) && $element['#attributes']['rel'] == 'canonical') {
         $elements[$key]['#attributes']['href'] = $metadata['metadata_canonical'];
