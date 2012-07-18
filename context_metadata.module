@@ -56,7 +56,12 @@ function context_metadata_page_title_alter(&$title) {
   $static_metadata_array = context_metadata_static_store();
 
   if (isset($static_metadata_array['metadata_title'])) {
-    $title = $static_metadata_array['metadata_title'];
+    if (module_exists('token')) {
+      $title = token_replace($static_metadata_array['metadata_title'], $type = 'global', $object = NULL, $leading = '[', $trailing = ']');
+    }
+    else {
+      $title = $static_metadata_array['metadata_title'];
+    }
   }
 }
 

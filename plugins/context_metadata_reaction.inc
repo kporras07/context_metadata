@@ -31,6 +31,8 @@ class context_metadata_reaction extends context_reaction {
       '#maxlength' => 400, // some say this this is the max recommended length
       '#default_value' => isset($values['metadata_keywords']) ? $values['metadata_keywords'] : '',
     );
+
+
     
     $form['metadata_canonical'] = array(
       '#title' => t('Canonical URL'),
@@ -39,6 +41,19 @@ class context_metadata_reaction extends context_reaction {
       '#maxlength' => 400, // some say this this is the max recommended length
       '#default_value' => isset($values['metadata_canonical']) ? $values['metadata_canonical'] : '',
     );
+    
+    if (module_exists('token')) {
+      $form['view']['token_help'] = array(
+        '#title' => t('Replacement patterns'),
+        '#type' => 'fieldset',
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      );
+      $form['view']['token_help']['help'] = array(
+        '#value' => theme('token_help', 'node'),
+      );
+    }
+    
     return $form;
   }
 
