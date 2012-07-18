@@ -22,7 +22,6 @@ function context_metadata_context_plugins() {
   return $plugins;
 }
 
-
 /**
  * Implementation of hook_context_registry()
  */
@@ -48,7 +47,6 @@ function context_metadata_context_page_reaction() {
   }
 }
 
-
 /**
 * Implements hook_page_title_alter().
 */
@@ -64,7 +62,6 @@ function context_metadata_page_title_alter(&$title) {
     }
   }
 }
-
 
 /**
 * Implements hook_nodewords_tags_alter().
@@ -87,7 +84,6 @@ function context_metadata_nodewords_tags_alter(&$output, $parameters) {
     $output['canonical'] = $static_metadata_array['metadata_canonical'];
   }
 }
-
 
 /**
 * static store.
