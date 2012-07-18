@@ -2,7 +2,7 @@
 
 /**
  * @file
- *   Provides a context reaction
+ * Provides a context reaction
  */
 
 /**
@@ -12,7 +12,7 @@ function context_metadata_context_plugins() {
   $plugins = array();
   $plugins['context_metadata_context_reaction'] = array(
     'handler' => array(
-      'path' => drupal_get_path('module', 'context_metadata') .'/plugins',
+      'path' => drupal_get_path('module', 'context_metadata') . '/plugins',
       'file' => 'context_metadata_reaction.inc',
       'class' => 'context_metadata_reaction',
       'parent' => 'context_reaction',
@@ -84,7 +84,7 @@ function context_metadata_nodewords_tags_alter(&$output, $parameters) {
 }
 
 /**
- * static store.
+ * Static store.
  */
 function context_metadata_static_store($static_metadata_array = array()) {
   static $static_array;

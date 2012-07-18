@@ -1,8 +1,9 @@
 <?php
 
 /**
+ * @file
  * Output context maxage.
-**/
+ */
 class context_metadata_reaction extends context_reaction {
   function options_form($context) {
     $values = $this->fetch_from_context($context);
@@ -17,21 +18,21 @@ class context_metadata_reaction extends context_reaction {
       '#title' => t('Meta Description'),
       '#description' => t('Meta Description'),
       '#type' => 'textfield',
-      '#maxlength' => 400, // some say this this is the max recommended length
+      '#maxlength' => 400,
       '#default_value' => isset($values['metadata_description']) ? $values['metadata_description'] : '',
     );
     $form['metadata_keywords'] = array(
       '#title' => t('Meta Keywords'),
       '#description' => t('Meta Keywords'),
       '#type' => 'textfield',
-      '#maxlength' => 400, // some say this this is the max recommended length
+      '#maxlength' => 400,
       '#default_value' => isset($values['metadata_keywords']) ? $values['metadata_keywords'] : '',
     );
     $form['metadata_canonical'] = array(
       '#title' => t('Canonical URL'),
       '#description' => t('Canonical URL'),
       '#type' => 'textfield',
-      '#maxlength' => 400, // some say this this is the max recommended length
+      '#maxlength' => 400,
       '#default_value' => isset($values['metadata_canonical']) ? $values['metadata_canonical'] : '',
     );
     if (module_exists('token')) {
@@ -50,7 +51,7 @@ class context_metadata_reaction extends context_reaction {
 
 
   /**
-   * Output a list of active contexts.
+   * Outputs a list of active contexts.
    */
   function execute() {
     $contexts = context_active_contexts();
@@ -63,8 +64,7 @@ class context_metadata_reaction extends context_reaction {
             $static_metadata_array[$key] = t(check_plain($value));
           }
         }
-
-        // store the array
+        // Store the array.
         context_metadata_static_store($static_metadata_array);
       }
     }
