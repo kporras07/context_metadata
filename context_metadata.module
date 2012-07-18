@@ -6,7 +6,7 @@
  */
 
 /**
- * Implementation of hook_context_plugins()
+ * Implements hook_context_plugins().
  */
 function context_metadata_context_plugins() {
   $plugins = array();
@@ -23,24 +23,22 @@ function context_metadata_context_plugins() {
 }
 
 /**
- * Implementation of hook_context_registry()
+ * Implements hook_context_registry().
  */
 function context_metadata_context_registry() {
   return array(
     'reactions' => array(
       'context_metadata' => array(
         'title' => t('Meta Data'),
-        //'description' => t(''),
         'plugin' => 'context_metadata_context_reaction',
       ),
     ),
   );
 }
 
-
 /**
-* Implements hook_context_page_reaction().
-*/
+ * Implements hook_context_page_reaction().
+ */
 function context_metadata_context_page_reaction() {
   if ($plugin = context_get_plugin('reaction', 'context_metadata')) {
     $plugin->execute();
@@ -48,8 +46,8 @@ function context_metadata_context_page_reaction() {
 }
 
 /**
-* Implements hook_page_title_alter().
-*/
+ * Implements hook_page_title_alter().
+ */
 function context_metadata_page_title_alter(&$title) {
   $static_metadata_array = context_metadata_static_store();
 
@@ -64,36 +62,34 @@ function context_metadata_page_title_alter(&$title) {
 }
 
 /**
-* Implements hook_nodewords_tags_alter().
-*/
+ * Implements hook_nodewords_tags_alter().
+ */
 function context_metadata_nodewords_tags_alter(&$output, $parameters) {
   $static_metadata_array = context_metadata_static_store();
 
-  // alter the description
+  // Alter the description.
   if (isset($static_metadata_array['metadata_description'])) {
     $output['description'] = $static_metadata_array['metadata_description'];
   }
 
-  // alter the keywords
+  // Alter the keywords.
   if (isset($static_metadata_array['metadata_keywords'])) {
     $output['keywords'] = $static_metadata_array['metadata_keywords'];
   }
 
-  // alter the canonical URL
+  // Alter the canonical URL.
   if (isset($static_metadata_array['metadata_canonical'])) {
     $output['canonical'] = $static_metadata_array['metadata_canonical'];
   }
 }
 
 /**
-* static store.
-*/
+ * static store.
+ */
 function context_metadata_static_store($static_metadata_array = array()) {
   static $static_array;
-
   if (!empty($static_metadata_array)) {
     $static_array = $static_metadata_array;
   }
-
   return $static_array;
 }
