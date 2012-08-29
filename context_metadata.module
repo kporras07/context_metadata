@@ -5,6 +5,7 @@
  */
 function context_metadata_context_plugins() {
   $plugins = array();
+
   $plugins['context_metadata_context_reaction'] = array(
     'handler' => array(
       'path' => drupal_get_path('module', 'context_metadata') . '/plugins',
@@ -33,7 +34,7 @@ function context_metadata_context_registry() {
 
 /**
 * Implements hook_context_page_reaction().
-*/  
+*/
 function context_metadata_context_page_reaction() {
   if ($plugin = context_get_plugin('reaction', 'context_metadata')) {
     $plugin->execute();
@@ -46,12 +47,13 @@ function context_metadata_context_page_reaction() {
  */
 function context_metadata_preprocess_html(&$vars) {
   $metadata = drupal_static('metadata_array');
-  
- 
-  
+
+
+
   if (isset($metadata['metadata_title'])) {
     $vars['head_title'] = token_replace($metadata['metadata_title']);
   }
+
 }
 
 /**
@@ -63,7 +65,7 @@ function context_metadata_html_head_alter(&$elements) {
   unset($elements['system_meta_generator']);
 
   $metadata = drupal_static('metadata_array');
-  
+
   if (isset($metadata['metadata_description'])) {
     $elements['metatag_description'] = array(
       '#theme' => 'metatag',
@@ -74,7 +76,7 @@ function context_metadata_html_head_alter(&$elements) {
       '#name' => 'description'
       );
   }
-  
+
   if (isset($metadata['metadata_keywords'])) {
     $elements['metatag_keywords'] = array(
       '#theme' => 'metatag',
@@ -89,11 +91,11 @@ function context_metadata_html_head_alter(&$elements) {
   if (isset($metadata['metadata_canonical'])) {
     foreach ($elements as $key => $element) {
       if (isset($element['#attributes']['rel']) && $element['#attributes']['rel'] == 'canonical') {
-        $elements[$key]['#attributes']['href'] = $metadata['metadata_canonical'];
+        $elements[$key]['#attributes']['href'] = token_replace($metadata['metadata_canonical']);
       }
       if ($key == 'metatag_canonical') {
-        $elements[$key]['#value'] = $metadata['metadata_canonical'];
+        $elements[$key]['#value'] = token_replace($metadata['metadata_canonical']);
       }
-    }  
+    }
   }
 }

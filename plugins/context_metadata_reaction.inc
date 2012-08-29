@@ -39,7 +39,7 @@ class context_metadata_reaction extends context_reaction {
       '#maxlength' => 400, // some say this this is the max recommended length
       '#default_value' => isset($values['metadata_canonical']) ? $values['metadata_canonical'] : '',
     );
-    
+
     $form['tokens'] = array(
       '#theme' => 'token_tree',
       '#token_types' => array('node'), // The token types that have specific context. Can be multiple token types like 'term' and/or 'user'
