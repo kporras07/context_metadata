@@ -12,7 +12,7 @@ class context_metadata_reaction extends context_reaction {
       '#title' => t('Meta Title'),
       '#description' => t('Title goes here'),
       '#type' => 'textfield',
-      '#maxlength' => 256, // some say this this is the max recommended length
+      '#maxlength' => 256,
       '#default_value' => isset($values['metadata_title']) ? $values['metadata_title'] : '',
     );
 
@@ -20,7 +20,7 @@ class context_metadata_reaction extends context_reaction {
       '#title' => t('Meta Description'),
       '#description' => t('Meta Description'),
       '#type' => 'textfield',
-      '#maxlength' => 400, // some say this this is the max recommended length
+      '#maxlength' => 400,
       '#default_value' => isset($values['metadata_description']) ? $values['metadata_description'] : '',
     );
 
@@ -28,7 +28,7 @@ class context_metadata_reaction extends context_reaction {
       '#title' => t('Meta Keywords'),
       '#description' => t('Meta Keywords'),
       '#type' => 'textfield',
-      '#maxlength' => 400, // some say this this is the max recommended length
+      '#maxlength' => 400,
       '#default_value' => isset($values['metadata_keywords']) ? $values['metadata_keywords'] : '',
     );
 
@@ -36,8 +36,16 @@ class context_metadata_reaction extends context_reaction {
       '#title' => t('Canonical URL'),
       '#description' => t('Canonical URL'),
       '#type' => 'textfield',
-      '#maxlength' => 400, // some say this this is the max recommended length
+      '#maxlength' => 400,
       '#default_value' => isset($values['metadata_canonical']) ? $values['metadata_canonical'] : '',
+    );
+
+    $form['metadata_h1'] = array(
+      '#title' => t('H1 tag'),
+      '#description' => t('Overrides the H1 title'),
+      '#type' => 'textfield',
+      '#maxlength' => 400,
+      '#default_value' => isset($values['metadata_h1']) ? $values['metadata_h1'] : '',
     );
 
     $form['tokens'] = array(
@@ -55,10 +63,8 @@ class context_metadata_reaction extends context_reaction {
   function execute() {
 
     $contexts = context_active_contexts();
-
     foreach ($contexts as $context) {
       if (!empty($context->reactions['context_metadata'])) {
-
         $metadata_array = $context->reactions['context_metadata'];
         $metadata = &drupal_static('metadata_array');
         foreach ($metadata_array as $key => $value) {
