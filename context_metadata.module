@@ -64,7 +64,6 @@ function context_metadata_preprocess_html(&$vars) {
     $vars['head_title'] = $token_title;
     $vars['head_array']['title'] = $token_title;
   }
-
 }
 
 /**

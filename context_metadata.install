@@ -9,5 +9,5 @@
  * Implements hook_install().
  */
 function context_metadata_install() {
-  db_query("UPDATE {system} SET weight = -1000 WHERE name = 'context_metadata'");
+  db_query("UPDATE {system} SET weight = 1000 WHERE name = 'context_metadata'");
 }
