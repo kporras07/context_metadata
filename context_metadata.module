@@ -61,8 +61,10 @@ function context_metadata_preprocess_html(&$vars) {
   $metadata = drupal_static('metadata_array');
   if (isset($metadata['metadata_title'])) {
     $token_title = token_replace($metadata['metadata_title']);
-    $vars['head_title'] = $token_title;
-    $vars['head_array']['title'] = $token_title;
+    if (!empty($token_title)) {
+      $vars['head_title'] = $token_title;
+      $vars['head_array']['title'] = $token_title;
+    }
   }
 }
 
@@ -75,35 +77,53 @@ function context_metadata_html_head_alter(&$elements) {
   unset($elements['system_meta_generator']);
 
   $metadata = drupal_static('metadata_array');
+
   if (isset($metadata['metadata_description'])) {
-    $elements['metatag_description'] = array(
-      '#theme' => 'metatag',
-      '#tag' => 'meta',
-      '#value' => token_replace($metadata['metadata_description']),
-      '#type' => 'html_tag',
-      '#id' => 'metatag_description',
-      '#name' => 'description'
-      );
+    $value = token_replace($metadata['metadata_description']);
+    if (!empty($value)) {
+      $elements['metatag_description'] = array(
+        '#theme' => 'metatag',
+        '#tag' => 'meta',
+        '#value' => $value,
+        '#type' => 'html_tag',
+        '#id' => 'metatag_description',
+        '#name' => 'description'
+        );
+    }
   }
 
   if (isset($metadata['metadata_keywords'])) {
-    $elements['metatag_keywords'] = array(
-      '#theme' => 'metatag',
-      '#tag' => 'meta',
-      '#value' => token_replace($metadata['metadata_keywords']),
-      '#type' => 'html_tag',
-      '#id' => 'metatag_keywords',
-      '#name' => 'keywords'
-    );
+    $value = token_replace($metadata['metadata_keywords']);
+    if (!empty($value)) {
+      $elements['metadata_keywords'] = array(
+        '#theme' => 'metatag',
+        '#tag' => 'meta',
+        '#value' => $value,
+        '#type' => 'html_tag',
+        '#id' => 'metatag_keywords',
+        '#name' => 'keywords'
+        );
+    }
   }
 
   if (isset($metadata['metadata_canonical'])) {
-    foreach ($elements as $key => $element) {
-      if (isset($element['#attributes']['rel']) && $element['#attributes']['rel'] == 'canonical') {
-        $elements[$key]['#attributes']['href'] = token_replace($metadata['metadata_canonical']);
-      }
-      if ($key == 'metatag_canonical') {
-        $elements[$key]['#value'] = token_replace($metadata['metadata_canonical']);
+    $value = token_replace($metadata['metadata_canonical']);
+    if (!empty($value)) {
+      $elements['metatag_canonical'] = array(
+        '#theme' => 'metatag',
+        '#tag' => 'meta',
+        '#value' => $value,
+        '#type' => 'html_tag',
+        '#id' => 'metatag_canonical',
+        '#name' => 'canonical'
+        );
+      foreach ($elements as $key => $element) {
+        if (isset($element['#attributes']['rel']) && $element['#attributes']['rel'] == 'canonical') {
+          $elements[$key]['#attributes']['href'] = $value;
+        }
+        if ($key == 'metatag_canonical') {
+          $elements[$key]['#value'] = $value;
+        }
       }
     }
   }
