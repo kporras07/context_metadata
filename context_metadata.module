@@ -106,6 +106,20 @@ function context_metadata_html_head_alter(&$elements) {
     }
   }
 
+  if (isset($metadata['metadata_robots'])) {
+    $value = token_replace($metadata['metadata_robots']);
+    if (!empty($value)) {
+      $elements['metadata_robots'] = array(
+        '#theme' => 'metatag',
+        '#tag' => 'meta',
+        '#value' => $value,
+        '#type' => 'html_tag',
+        '#id' => 'metadata_robots',
+        '#name' => 'robots'
+        );
+    }
+  }
+
   if (isset($metadata['metadata_canonical'])) {
     $value = token_replace($metadata['metadata_canonical']);
     if (!empty($value)) {

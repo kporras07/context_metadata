@@ -48,6 +48,14 @@ class context_metadata_reaction extends context_reaction {
       '#default_value' => isset($values['metadata_h1']) ? $values['metadata_h1'] : '',
     );
 
+    $form['metadata_robots'] = array(
+      '#title' => t('Robots'),
+      '#description' => t('Robots'),
+      '#type' => 'textfield',
+      '#maxlength' => 400,
+      '#default_value' => isset($values['metadata_robots']) ? $values['metadata_robots'] : '',
+    );
+
     $form['tokens'] = array(
       '#theme' => 'token_tree',
       '#token_types' => array('node'), // The token types that have specific context. Can be multiple token types like 'term' and/or 'user'
