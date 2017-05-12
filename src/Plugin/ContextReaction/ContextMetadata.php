@@ -1,12 +1,25 @@
 <?php
 
-/**
- * @file context reaction
- */
-class context_metadata_reaction extends context_reaction {
+namespace Drupal\context_metadata\Plugin\ContextReaction;
 
-  function options_form($context) {
-    $values = $this->fetch_from_context($context);
+use Drupal\context\ContextReactionPluginBase;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Provides a content reaction that adds a Metadata.
+ *
+ * @ContextReaction(
+ *   id = "context_metadata",
+ *   label = @Translation("Context Metadata")
+ * )
+ */
+class ContextMetadata extends ContextReactionPluginBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+    /*$values = $this->fetch_from_context($context);
 
     $form['metadata_title'] = array(
       '#title' => t('Meta Title'),
@@ -62,15 +75,40 @@ class context_metadata_reaction extends context_reaction {
       '#global_types' => TRUE, // A boolean TRUE or FALSE whether to include 'global' context tokens like [current-user:*] or [site:*]. Defaults to TRUE.
       '#click_insert' => TRUE, // A boolean whether to include the 'Click this token to insert in into the the focused textfield' JavaScript functionality. Defaults to TRUE.
     );
-    return $form;
+
+    return $form;*/
   }
 
   /**
-   * Output a list of active contexts.
+   * {@inheritdoc}
    */
-  function execute() {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
+    /*$this->setConfiguration([
+      'body_class' => $form_state->getValue('body_class'),
+    ]);*/
+  }
 
-    $contexts = context_active_contexts();
+  /**
+   * {@inheritdoc}
+   */
+  public function summary() {
+    return $this->getConfiguration()['context_metadata'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration() {
+    return parent::defaultConfiguration() + [
+      'context_metadata' => '',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function execute(array &$vars = []) {
+    /*$contexts = context_active_contexts();
     foreach ($contexts as $context) {
       if (!empty($context->reactions['context_metadata'])) {
         $metadata_array = $context->reactions['context_metadata'];
@@ -81,6 +119,7 @@ class context_metadata_reaction extends context_reaction {
           }
         }
       }
-    }
+    }*/
   }
+
 }
