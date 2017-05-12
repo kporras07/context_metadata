@@ -1,9 +1,0 @@
-name = "Context Meta Data"
-dependencies[] = "ctools"
-dependencies[] = "metatag"
-dependencies[] = "context"
-description = "Allows site admins to setup Meta Data using Contexts module"
-core = "7.x"
-
-
-
