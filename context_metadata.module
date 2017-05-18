@@ -1,78 +1,103 @@
 <?php
 
-/**
- * Implements hook_context_plugins()
- */
-function context_metadata_context_plugins() {
-  $plugins = array();
-
-  $plugins['context_metadata_context_reaction'] = array(
-    'handler' => array(
-      'path' => drupal_get_path('module', 'context_metadata') . '/plugins',
-      'file' => 'context_metadata_reaction.inc',
-      'class' => 'context_metadata_reaction',
-      'parent' => 'context_reaction',
-    ),
-  );
-
-  return $plugins;
-}
-
-/**
- * Implements hook_context_registry()
- */
-function context_metadata_context_registry() {
-  return array(
-    'reactions' => array(
-      'context_metadata' => array(
-        'title' => t('Meta Data'),
-        'plugin' => 'context_metadata_context_reaction',
-      ),
-    ),
-  );
-}
-
-/**
-* Implements hook_context_page_reaction().
-*/
-function context_metadata_context_page_reaction() {
-  if ($plugin = context_get_plugin('reaction', 'context_metadata')) {
-    $plugin->execute();
-  }
-}
+use Drupal\Component\Utility\Html;
 
 /**
  * Implements hook_preprocess_page().
  */
-function context_metadata_preprocess_page(&$vars) {
+/*function context_metadata_preprocess_page(&$vars) {
   $metadata = drupal_static('metadata_array');
   if (isset($metadata['metadata_h1'])) {
     drupal_set_title(token_replace($metadata['metadata_h1']));
     unset($vars['title']);
   }
+}*/
+
+function context_metadata_page_attachments_alter(array &$attachments) {
+
+  $metatag_attachments = &drupal_static('metatag_attachments');
+  foreach ($metatag_attachments['#attached']['html_head'] as $item) {
+    if (in_array('description', $item)) {
+      ksm($item);
+    }
+    //ksm();
+    //$attachments['#attached']['html_head'][] = $item;
+  }
+
+  $metadata_description = [
+    //'#theme' => 'metatag',
+    '#tag' => 'meta',
+    '#attribuutes' => [
+      '#name' => 'description',
+      '#value' => 'foodesc123',
+    ],
+  ];
+  $attachments['#attached']['html_head'][] = $metadata_description;
+  //ksm($metatag_attachments);
+  //ksm($attachments);
 }
 
 /**
- * Implements hook_preprocess_html()
- * @param $vars
+ * Run the metadata context reactions if there are any and let them add
+ * metadata to the page.
+ *
+ * Implements hook_preprocess_HOOK().
  */
-function context_metadata_preprocess_html(&$vars) {
+function context_metadata_preprocess_html(&$variables) {
+  /** @var \Drupal\context\ContextManager $context_manager */
+  $context_manager = \Drupal::service('context.manager');
 
-  $metadata = drupal_static('metadata_array');
+  foreach ($context_manager->getActiveReactions('context_metadata') as $reaction) {
+    $metadata = $reaction->execute();
+    //ksm($metadata);
+    //ksm($variables);
+    if (isset($metadata['metadata_title'])) {
+      $value = $metadata['metadata_title'];
+      //$value = token_replace($metadata['metadata_title']);
+      if (!empty($value)) {
+        /*$title = [
+          '#tag' => 'title', // Set title for element
+          '#value' => $value, // Set value for title
+        ];
+        $variables['page']['#attached']['html_head'][] = [$title, 'title'];*/
+        //$variables['head_title']['title'] = Html::escape($value);
+      }
+    }
+//ksm($variables);
+    if (isset($metadata['metadata_description'])) {
+      $value = $metadata['metadata_description'];
+      //$value = token_replace($metadata['metadata_description']);
+      if (!empty($value)) {
+        $metadata_description['metatag_description'] = array(
+          '#theme' => 'metatag',
+          '#tag' => 'meta',
+          '#value' => $value,
+          '#type' => 'html_tag',
+          '#id' => 'metatag_description',
+          '#name' => 'description'
+        );
+
+        //$variables['#attached']['html_head'][] = [$metadata_description, 'description'];
+      }
+    }
+
+  }
+
+  /*$metadata = drupal_static('metadata_array');
   if (isset($metadata['metadata_title'])) {
     $token_title = token_replace($metadata['metadata_title']);
     if (!empty($token_title)) {
       $vars['head_title'] = $token_title;
       $vars['head_array']['title'] = $token_title;
     }
-  }
+  }*/
 }
 
 /**
  * Implements hook_html_head_alter()
  * @param unknown_type $elements
  */
-function context_metadata_html_head_alter(&$elements) {
+/*function context_metadata_html_head_alter(&$elements) {
 
   unset($elements['system_meta_generator']);
 
@@ -88,7 +113,7 @@ function context_metadata_html_head_alter(&$elements) {
         '#type' => 'html_tag',
         '#id' => 'metatag_description',
         '#name' => 'description'
-        );
+      );
     }
   }
 
@@ -102,7 +127,7 @@ function context_metadata_html_head_alter(&$elements) {
         '#type' => 'html_tag',
         '#id' => 'metatag_keywords',
         '#name' => 'keywords'
-        );
+      );
     }
   }
 
@@ -116,7 +141,7 @@ function context_metadata_html_head_alter(&$elements) {
         '#type' => 'html_tag',
         '#id' => 'metadata_robots',
         '#name' => 'robots'
-        );
+      );
     }
   }
 
@@ -130,7 +155,7 @@ function context_metadata_html_head_alter(&$elements) {
         '#type' => 'html_tag',
         '#id' => 'metatag_canonical',
         '#name' => 'canonical'
-        );
+      );
       foreach ($elements as $key => $element) {
         if (isset($element['#attributes']['rel']) && $element['#attributes']['rel'] == 'canonical') {
           $elements[$key]['#attributes']['href'] = $value;
@@ -141,4 +166,4 @@ function context_metadata_html_head_alter(&$elements) {
       }
     }
   }
-}
+}*/
