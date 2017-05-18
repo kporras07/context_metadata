@@ -1,4 +1,4 @@
-name: 'Context Meta Data'
+name: 'Context Metadata'
 description: 'Allows site admins to setup Meta Data using Contexts module'
 package: Context
 
