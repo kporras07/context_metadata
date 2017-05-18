@@ -19,7 +19,6 @@ class ContextMetadata extends ContextReactionPluginBase {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-
     $form['metadata_title'] = array(
       '#title' => $this->t('Meta Title'),
       '#description' => $this->t('Title goes here'),
@@ -117,6 +116,8 @@ class ContextMetadata extends ContextReactionPluginBase {
    * {@inheritdoc}
    */
   public function execute(array &$vars = []) {
+    $config = $this->getConfiguration();
+    return $config;
     /*$contexts = context_active_contexts();
     foreach ($contexts as $context) {
       if (!empty($context->reactions['context_metadata'])) {
