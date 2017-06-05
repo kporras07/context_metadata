@@ -4,6 +4,7 @@ namespace Drupal\context_metadata\Plugin\ContextReaction;
 
 use Drupal\context\ContextReactionPluginBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\Html;
 
 /**
  * Provides a content reaction that adds a Metadata.
@@ -43,12 +44,12 @@ class ContextMetadata extends ContextReactionPluginBase {
       '#default_value' => $this->getConfiguration()['metadata_keywords'],
     );
 
-    $form['metadata_canonical'] = array(
+    $form['metadata_canonical_url'] = array(
       '#title' => $this->t('Canonical URL'),
       '#description' => $this->t('Canonical URL'),
       '#type' => 'textfield',
       '#maxlength' => 400,
-      '#default_value' => $this->getConfiguration()['metadata_canonical'],
+      '#default_value' => $this->getConfiguration()['metadata_canonical_url'],
     );
 
     $form['metadata_h1'] = array(
@@ -59,14 +60,16 @@ class ContextMetadata extends ContextReactionPluginBase {
       '#default_value' => $this->getConfiguration()['metadata_h1'],
     );
 
-    $form['metadata_robots'] = array(
+    // TODO: Add this once we have other metadata working
+    /*$form['metadata_robots'] = array(
       '#title' => $this->t('Robots'),
       '#description' => $this->t('Robots'),
       '#type' => 'textfield',
       '#maxlength' => 400,
       '#default_value' => $this->getConfiguration()['metadata_robots'],
-    );
+    );*/
 
+    // TODO: Add this once we have other metadata working
     /*$form['tokens'] = array(
       '#theme' => 'token_tree',
       '#token_types' => array('node'), // The token types that have specific context. Can be multiple token types like 'term' and/or 'user'
@@ -85,7 +88,7 @@ class ContextMetadata extends ContextReactionPluginBase {
       'metadata_title' => $form_state->getValue('metadata_title'),
       'metadata_description' => $form_state->getValue('metadata_description'),
       'metadata_keywords' => $form_state->getValue('metadata_keywords'),
-      'metadata_canonical' => $form_state->getValue('metadata_canonical'),
+      'metadata_canonical_url' => $form_state->getValue('metadata_canonical_url'),
       'metadata_h1' => $form_state->getValue('metadata_h1'),
       'metadata_robots' => $form_state->getValue('metadata_robots'),
     ]);
@@ -106,7 +109,7 @@ class ContextMetadata extends ContextReactionPluginBase {
       'metadata_title' => '',
       'metadata_description' => '',
       'metadata_keywords' => '',
-      'metadata_canonical' => '',
+      'metadata_canonical_url' => '',
       'metadata_h1' => '',
       'metadata_robots' => '',
     ];
@@ -118,18 +121,6 @@ class ContextMetadata extends ContextReactionPluginBase {
   public function execute(array &$vars = []) {
     $config = $this->getConfiguration();
     return $config;
-    /*$contexts = context_active_contexts();
-    foreach ($contexts as $context) {
-      if (!empty($context->reactions['context_metadata'])) {
-        $metadata_array = $context->reactions['context_metadata'];
-        $metadata = &drupal_static('metadata_array');
-        foreach ($metadata_array as $key => $value) {
-          if (!empty($value)) {
-            $metadata[$key] = t(check_plain($value));
-          }
-        }
-      }
-    }*/
   }
 
 }
