@@ -13,12 +13,61 @@ use Drupal\Component\Utility\Html;
   }
 }*/
 
-function context_metadata_page_attachments_alter(array &$attachments) {
+function context_metadata_metatags_alter(array &$metatags, array $context) {
+  ksm($metatags);
+  /** @var \Drupal\context\ContextManager $context_manager */
+  $context_manager = \Drupal::service('context.manager');
+
+  foreach ($context_manager->getActiveReactions('context_metadata') as $reaction) {
+    $context_metadata = array_filter($reaction->execute());
+
+    // Add data checks
+    if (!empty($context_metadata)) {
+      foreach ($context_metadata as $key => $value) {
+
+        switch ($key) {
+          case 'metadata_title':
+            $metatags['title'] = $value;
+            break;
+
+          case 'metadata_description':
+            $metatags['description'] = $value;
+            break;
+
+          case 'metadata_keywords':
+            $metatags['keywords'] = $value;
+            break;
+
+          case 'metadata_canonical_url':
+            $metatags['canonical_url'] = $value;
+            break;
+
+          // TODO: Add this once we have other metadata working
+          case 'metadata_h1':
+            $metatags['h1'] = $value;
+            break;
+
+          case 'metadata_robots':
+            $metatags['robots'] = $value;
+            break;
+        }
+
+      }
+    }
+
+  }
+
+  ksm($context_metadata);
+  ksm($metatags);
+
+}
+
+function __context_metadata_page_attachments_alter(array &$attachments) {
 
   $metatag_attachments = &drupal_static('metatag_attachments');
   foreach ($metatag_attachments['#attached']['html_head'] as $item) {
     if (in_array('description', $item)) {
-      ksm($item);
+      //ksm($item);
     }
     //ksm();
     //$attachments['#attached']['html_head'][] = $item;
@@ -43,45 +92,22 @@ function context_metadata_page_attachments_alter(array &$attachments) {
  *
  * Implements hook_preprocess_HOOK().
  */
-function context_metadata_preprocess_html(&$variables) {
+function __context_metadata_preprocess_html(&$variables) {
+  $context_metadata = &drupal_static('context_metadata');
+
+  //ksm($context_metadata);
   /** @var \Drupal\context\ContextManager $context_manager */
   $context_manager = \Drupal::service('context.manager');
 
   foreach ($context_manager->getActiveReactions('context_metadata') as $reaction) {
-    $metadata = $reaction->execute();
-    //ksm($metadata);
-    //ksm($variables);
-    if (isset($metadata['metadata_title'])) {
-      $value = $metadata['metadata_title'];
-      //$value = token_replace($metadata['metadata_title']);
-      if (!empty($value)) {
-        /*$title = [
-          '#tag' => 'title', // Set title for element
-          '#value' => $value, // Set value for title
-        ];
-        $variables['page']['#attached']['html_head'][] = [$title, 'title'];*/
-        //$variables['head_title']['title'] = Html::escape($value);
-      }
-    }
-//ksm($variables);
-    if (isset($metadata['metadata_description'])) {
-      $value = $metadata['metadata_description'];
-      //$value = token_replace($metadata['metadata_description']);
-      if (!empty($value)) {
-        $metadata_description['metatag_description'] = array(
-          '#theme' => 'metatag',
-          '#tag' => 'meta',
-          '#value' => $value,
-          '#type' => 'html_tag',
-          '#id' => 'metatag_description',
-          '#name' => 'description'
-        );
-
-        //$variables['#attached']['html_head'][] = [$metadata_description, 'description'];
-      }
-    }
-
+    $context_metadata[] = $reaction->execute();
+    //ksm($reaction);
   }
+  ksm($context_manager);
+
+  //$context_metadata = &drupal_static('context_metadata');
+
+  //}
 
   /*$metadata = drupal_static('metadata_array');
   if (isset($metadata['metadata_title'])) {
@@ -145,8 +171,8 @@ function context_metadata_preprocess_html(&$variables) {
     }
   }
 
-  if (isset($metadata['metadata_canonical'])) {
-    $value = token_replace($metadata['metadata_canonical']);
+  if (isset($metadata['metadata_canonical_url'])) {
+    $value = token_replace($metadata['metadata_canonical_url']);
     if (!empty($value)) {
       $elements['metatag_canonical'] = array(
         '#theme' => 'metatag',
