@@ -4,7 +4,6 @@ namespace Drupal\context_metadata\Plugin\ContextReaction;
 
 use Drupal\context\ContextReactionPluginBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\Html;
 
 /**
  * Provides a content reaction that adds a Metadata.
@@ -52,29 +51,22 @@ class ContextMetadata extends ContextReactionPluginBase {
       '#default_value' => $this->getConfiguration()['metadata_canonical_url'],
     );
 
-    $form['metadata_h1'] = array(
+    // TODO: Add this once we have other metadata working.
+    /*$form['metadata_h1_title'] = array(
       '#title' => $this->t('H1 tag'),
       '#description' => $this->t('Overrides the H1 title'),
       '#type' => 'textfield',
       '#maxlength' => 400,
-      '#default_value' => $this->getConfiguration()['metadata_h1'],
-    );
+      '#default_value' => $this->getConfiguration()['metadata_h1_title'],
+    );*/
 
-    // TODO: Add this once we have other metadata working
+    // TODO: Add this once we have other metadata working.
     /*$form['metadata_robots'] = array(
       '#title' => $this->t('Robots'),
       '#description' => $this->t('Robots'),
       '#type' => 'textfield',
       '#maxlength' => 400,
       '#default_value' => $this->getConfiguration()['metadata_robots'],
-    );*/
-
-    // TODO: Add this once we have other metadata working
-    /*$form['tokens'] = array(
-      '#theme' => 'token_tree',
-      '#token_types' => array('node'), // The token types that have specific context. Can be multiple token types like 'term' and/or 'user'
-      '#global_types' => TRUE, // A boolean TRUE or FALSE whether to include 'global' context tokens like [current-user:*] or [site:*]. Defaults to TRUE.
-      '#click_insert' => TRUE, // A boolean whether to include the 'Click this token to insert in into the the focused textfield' JavaScript functionality. Defaults to TRUE.
     );*/
 
     return $form;
@@ -89,8 +81,8 @@ class ContextMetadata extends ContextReactionPluginBase {
       'metadata_description' => $form_state->getValue('metadata_description'),
       'metadata_keywords' => $form_state->getValue('metadata_keywords'),
       'metadata_canonical_url' => $form_state->getValue('metadata_canonical_url'),
-      'metadata_h1' => $form_state->getValue('metadata_h1'),
-      'metadata_robots' => $form_state->getValue('metadata_robots'),
+      // TODO: 'metadata_h1_title' => $form_state->getValue('metadata_h1_title'),
+      // TODO: 'metadata_robots' => $form_state->getValue('metadata_robots'),
     ]);
   }
 
@@ -110,8 +102,8 @@ class ContextMetadata extends ContextReactionPluginBase {
       'metadata_description' => '',
       'metadata_keywords' => '',
       'metadata_canonical_url' => '',
-      'metadata_h1' => '',
-      'metadata_robots' => '',
+      // TODO: 'metadata_h1_title' => '',
+      // TODO: 'metadata_robots' => '',
     ];
   }
 
