@@ -1,6 +1,6 @@
 # Context Metadata
 
-There are a number of modules already out there which cover some of the functionality, such as: Metatag.
+There are a number of modules already out there which cover some of the functionality, such as: Metatag Module.
 
 *But what if your page is not a node/taxonomy etc?*
 
