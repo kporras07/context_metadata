@@ -15,45 +15,35 @@
   */
 function context_metadata_metatags_alter(array &$metatags, array $context) {
 
-  /** @var \Drupal\context\ContextManager $context_manager */
-  $context_manager = \Drupal::service('context.manager');
+  /** @var \Drupal\context\ContextManager $contextManager */
+  $contextManager = \Drupal::service('context.manager');
 
-  foreach ($context_manager->getActiveReactions('context_metadata') as $reaction) {
-    $context_metadata = array_filter($reaction->execute());
+  // Start the loopty loop.
+  foreach ($contextManager->getActiveReactions('context_metadata') as $reaction) {
+    // Weed out the chaff.
+    $contextMetadata = array_filter($reaction->execute());
 
-    if (!empty($context_metadata)) {
-      foreach ($context_metadata as $key => $value) {
+    // Unset the ID.
+    unset($contextMetadata['id']);
 
-        switch ($key) {
-          case 'metadata_title':
-            $metatags['title'] = $value;
-            break;
+    // Start the loopty loop.
+    if (!empty($contextMetadata)) {
+      foreach ($contextMetadata as $key => $value) {
+        // Deal with arrays such as robots.
+        if (is_array($value)) {
+          $values = array_filter($value);
 
-          case 'metadata_description':
-            $metatags['description'] = $value;
-            break;
-
-          case 'metadata_keywords':
-            $metatags['keywords'] = $value;
-            break;
-
-          case 'metadata_canonical_url':
-            $metatags['canonical_url'] = $value;
-            break;
-
-          // TODO: Add this once we have other metadata working.
-          case 'metadata_h1_title':
-            $metatags['h1'] = $value;
-            break;
-
-          case 'metadata_robots':
-            $metatags['robots'] = $value;
-            break;
+          // Only add if there are any values.
+          if (!empty($values)) {
+            $originalValues = $metatags[$key];
+            $metatags[$key] = array_merge($originalValues, $values);
+          }
         }
-
+        else {
+          $metatags[$key] = $value;
+        }
       }
     }
-
   }
 
 }
