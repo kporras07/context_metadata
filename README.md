@@ -1,5 +1,5 @@
 # Context Metadata
-[![CircleCI](https://circleci.com/gh/dakkusingh/tealiumiq.svg?style=svg)](https://circleci.com/gh/dakkusingh/tealiumiq)
+[![CircleCI](https://circleci.com/gh/dakkusingh/context_metadata.svg?style=svg)](https://circleci.com/gh/dakkusingh/context_metadata)
 
 There are a number of modules already out there which cover some of 
 the functionality, such as: Metatag Module.
