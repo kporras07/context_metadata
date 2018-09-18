@@ -1,10 +1,14 @@
 # Context Metadata
+[![CircleCI](https://circleci.com/gh/dakkusingh/tealiumiq.svg?style=svg)](https://circleci.com/gh/dakkusingh/tealiumiq)
 
-There are a number of modules already out there which cover some of the functionality, such as: Metatag Module.
+There are a number of modules already out there which cover some of 
+the functionality, such as: Metatag Module.
 
 *But what if your page is not a node/taxonomy etc?*
 
-This module relies on Context module and Metatag module to set Meta Data per any possible context combinations, so you can finally target:
+This module relies on Context module and Metatag module to set 
+MetaData per any possible context combinations, so you can 
+finally target:
 
 * Metatags for custom callback pages
 * Metatags for Dynamic view pages
