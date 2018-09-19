@@ -18,19 +18,17 @@ finally target:
 * Combination of any of the above
 
 ## Compatibility
-* Tested with **Metatag 8.1.1**
-* Tested with **Context 8.x-1.0-alpha1**
+* Tested with **Metatag 8.x-1.7**
+* Tested with **Context 8.x-4.0-beta2**
 
 ## Supports
 * Tokens integration
+* Native Metatag fields architecture.
+* Supports Metatag fields defined by custom modules
 
 ## Fields set by Context Metadata
-Version 8.1.0 of this module supports the following meta fields:
-
-* Meta Title
-* Meta Description
-* Meta Keywords
-* Meta Canonical URL
+Version 8.2.0 of this module supports all of the supported Metatag 
+fields.
 
 ## Project Code
 
