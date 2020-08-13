@@ -1,0 +1,10 @@
+{
+    "name": "drupal/context_metadata",
+    "type": "drupal-module",
+    "description": "Context Metadata module for Drupal.",
+    "homepage": "http://drupal.org/project/context_metadata",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "drupal/core": "^8.8 || ^9"
+    }
+}
